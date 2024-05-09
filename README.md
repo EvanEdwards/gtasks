@@ -1,3 +1,17 @@
+
+> EvanEdwards is a fork to add functionality and bring it up to date with Google's specs
+>
+> - [x] json output
+>   - [ ] help for json output
+> - [ ] Update credential fetch to match Google's newer spec
+> - [ ] Delete and toggle completed by task ID
+> - [ ] Move credential storage to XDG specs (.config/gtasks/{files}.json)
+> - [ ] Make the docs site live again.
+>   - [ ] Update the docs site
+ 
+
+
+
 # Google Tasks CLI
 
 `gtasks`: A CLI Tool for Google Tasks

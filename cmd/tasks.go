@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"os"
 	"runtime"
@@ -90,6 +91,36 @@ var viewTasksCmd = &cobra.Command{
 		}
 
 		table.Render()
+	},
+}
+
+
+var viewJSONCmd = &cobra.Command{
+	Use:   "json",
+	Short: "View tasks in tasklist as JSON",
+	Long: `
+	Use this command to output tasks in selected 
+	tasklist for the currently signed in account
+	using JSON as the format.
+	`,
+	Run: func(cmd *cobra.Command, args []string) {
+		srv := api.GetService()
+		tList := getTaskLists(srv)
+
+		tasks, err := api.GetTasks(srv, tList.Id, viewTasksFlags.includeCompleted || viewTasksFlags.onlyCompleted)
+		if err != nil {
+			color.Red(err.Error())
+			return
+		}
+
+		utils.Sort(tasks, viewTasksFlags.sort)
+
+		j, err := json.Marshal(tasks)
+		if err != nil {
+			color.Red(err.Error())
+			return
+		}
+		fmt.Println(string(j))
 	},
 }
 
@@ -235,8 +266,11 @@ func init() {
 	viewTasksCmd.Flags().BoolVarP(&viewTasksFlags.includeCompleted, "include-completed", "i", false, "use this flag to include completed tasks")
 	viewTasksCmd.Flags().BoolVar(&viewTasksFlags.onlyCompleted, "completed", false, "use this flag to only show completed tasks")
 	viewTasksCmd.Flags().StringVar(&viewTasksFlags.sort, "sort", "position", "use this flag to sort by [due,title,position]")
+	viewJSONCmd.Flags().BoolVarP(&viewTasksFlags.includeCompleted, "include-completed", "i", false, "use this flag to include completed tasks")
+	viewJSONCmd.Flags().BoolVar(&viewTasksFlags.onlyCompleted, "completed", false, "use this flag to only show completed tasks")
+	viewJSONCmd.Flags().StringVar(&viewTasksFlags.sort, "sort", "position", "use this flag to sort by [due,title,position]")
 	tasksCmd.PersistentFlags().StringVarP(&taskListFlag, "tasklist", "l", "", "use this flag to specify a tasklist")
-	tasksCmd.AddCommand(viewTasksCmd, createTaskCmd, markCompletedCmd, deleteTaskCmd)
+	tasksCmd.AddCommand(viewTasksCmd, createTaskCmd, markCompletedCmd, deleteTaskCmd, viewJSONCmd)
 	rootCmd.AddCommand(tasksCmd)
 }
 
