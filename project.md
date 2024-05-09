@@ -9,6 +9,7 @@ license: Apache
 category: utility
 ---
 
+> [!NOTE] 
 > EvanEdwards is a fork to add functionality and bring it up to date with Google's specs
 >
 > - [x] json output
@@ -16,8 +17,11 @@ category: utility
 > - [ ] Update credential fetch to match Google's newer spec
 > - [ ] Delete and toggle completed by task ID
 > - [ ] Move credential storage to XDG specs (.config/gtasks/{files}.json)
+> - [ ] Add manpage
+> - [ ] Add jday Obsidian scripts to sync Obsidian with Google Tasks
 > - [ ] Make the docs site live again.
 >   - [ ] Update the docs site
+>   - [ ] Split the docs site to a different repo?
  
 
 
